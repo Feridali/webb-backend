@@ -29,4 +29,23 @@ exports.validateAccessToken = (token) => {
   }
 };
 
-exports.validateRefreshToken = (token) => {};
+exports.validateRefreshToken = (token) => {
+  try {
+    return jwt.verify(token, REFRESH_SECRET_KEY);
+  } catch (error) {
+    return null;
+  }
+};
+
+exports.cryptPassword = async (plainPassword) => {
+  const saltRounds = 10;
+  if (!plainPassword) {
+    throw new Error("Plain password is required");
+  }
+  const hashedPassword = await bcrypt.hash(plainPassword, saltRounds);
+  return hashedPassword;
+};
+
+exports.comparepareHashwords = async (outside, inside) => {
+  return await bcrypt.compare(outside, inside);
+};
