@@ -63,3 +63,60 @@ exports.listGroups = () => {
     members: groups[groupName].map((userId) => this.getUser(userId)),
   }));
 };
+
+exports.deleteGroup = (groupName) => {
+  if (groups.hasOwnProperty(groupName)) {
+    delete groups[groupName];
+    return true;
+  }
+  return false;
+};
+
+exports.getUserGroup = (userId, groupName) => {
+  return Object.keys(groups).filter((groupName) =>
+    groups[groupName].includes(userId)
+  );
+};
+
+exports.addUserToGroup = (userId, groupName) => {
+  if (!groups[groupName]) {
+    console.log("Group does not exist");
+    return false;
+  }
+
+  const userExists = users.some((user) => user.id === userId);
+  if (!userExists) {
+    console.log("User does not exist.");
+    return false;
+  }
+
+  if (groups[groupName].include(userId)) {
+    console.log("User already in the group.");
+    return false;
+  }
+
+  groups[groupName].push(userId);
+  return true;
+};
+
+exports.removeUserFromGroup = (userId, groupName) => {
+  if (groups[groupName]) {
+    let initialLength = groups[groupName].length;
+    groups[groupName] = groups[groupName].filter((id) => id !== userId);
+    return initialLength !== groups[groupName].length;
+  }
+  return false;
+};
+
+exports.getUserByUsername = (username) => {
+  return users.find((user) => user.username === username);
+};
+
+exports.getUsers = () => {
+  return user.map((user) => ({
+    ...user,
+    groups: Object.keys(groups).filter((groupName) =>
+      groups[groupName].includes(user.id)
+    ),
+  }));
+};
