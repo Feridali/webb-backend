@@ -1,9 +1,11 @@
+require("dotenv").config();
 const jwt = require("jsonwebtoken");
 const { getUserGroup } = require("./user_handler");
 const bcrypt = require("bcrypt");
 
-const SECRET_KEY = "your_secret_key";
-const REFRESH_SECRET_KEY = "your_refresh_secret_key";
+const SECRET_KEY = process.env.SECRET_KEY || "your_secret_key";
+const REFRESH_SECRET_KEY =
+  process.env.REFRESH_SECRET_KEY || "your_refresh_secret_key";
 
 exports.generateAccessToken = (user) => {
   const payload = {

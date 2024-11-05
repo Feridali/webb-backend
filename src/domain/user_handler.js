@@ -90,7 +90,7 @@ exports.addUserToGroup = (userId, groupName) => {
     return false;
   }
 
-  if (groups[groupName].include(userId)) {
+  if (groups[groupName].includes(userId)) {
     console.log("User already in the group.");
     return false;
   }
@@ -113,7 +113,7 @@ exports.getUserByUsername = (username) => {
 };
 
 exports.getUsers = () => {
-  return user.map((user) => ({
+  return users.map((user) => ({
     ...user,
     groups: Object.keys(groups).filter((groupName) =>
       groups[groupName].includes(user.id)
